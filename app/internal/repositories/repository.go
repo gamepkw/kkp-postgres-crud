@@ -25,7 +25,6 @@ func NewOrderRepository(db *gorm.DB) *orderRepository {
 
 func (r *orderRepository) Create(ctx context.Context, order *model.Order) error {
 	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		// GORM will automatically create order and its items
 		if err := tx.Create(order).Error; err != nil {
 			return fmt.Errorf("failed to create order: %w", err)
 		}
