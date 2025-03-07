@@ -29,21 +29,21 @@ func NewOrderHandler(service service.IOrderService) *orderHandler {
 }
 
 func (h *orderHandler) CreateOrder(c echo.Context) error {
-	var order model.Order
-	if err := c.Bind(&order); err != nil {
+	var req model.CreateOrder
+	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid input"})
 	}
-	if err := c.Validate(&order); err != nil {
+	if err := c.Validate(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
 	}
 	ctx, cancel := context.WithTimeout(c.Request().Context(), time.Second*10)
 	defer cancel()
-	if err := h.service.Create(ctx, &order); err != nil {
-		if err == context.DeadlineExceeded {
-			return c.JSON(http.StatusRequestTimeout, map[string]string{"error": "Request timed out"})
-		}
+
+	order := req.ToOrder()
+	if err := h.service.Create(ctx, order); err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to create order: " + err.Error()})
 	}
+
 	return c.JSON(http.StatusCreated, constant.RespSuccessWithData(order))
 }
 
@@ -90,17 +90,18 @@ func (h *orderHandler) UpdateOrderStatus(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid ID"})
 	}
 
-	var order model.Order
-	if err := c.Bind(&order); err != nil {
+	var req model.UpdateOrderStatus
+	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid input"})
 	}
-	if err := c.Validate(&order); err != nil {
+	if err := c.Validate(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
 	}
 
 	ctx, cancel := context.WithTimeout(c.Request().Context(), time.Second*10)
 	defer cancel()
-	if err := h.service.Update(ctx, id, order.Status); err != nil {
+
+	if err := h.service.Update(ctx, id, req.NewStatus); err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to update order"})
 	}
 	return c.JSON(http.StatusOK, constant.RespSuccess())

@@ -1,0 +1,129 @@
+{
+	"info": {
+		"_postman_id": "aa013bb7-22a3-4c3b-957c-03378212dcf2",
+		"name": "postgres-crud",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16382736"
+	},
+	"item": [
+		{
+			"name": "create-order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"customerName\": \"Pakawat\",\n    \"status\": \"PENDING\",\n    \"items\": [\n        {\n            \"productName\": \"Apple Iphone 16\",\n            \"quantity\": 10,\n            \"price\": 100.00\n        },\n        {\n            \"productName\": \"Apple Iphone 16 Pro\",\n            \"quantity\": 5,\n            \"price\": 200.00\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/postgres-crud/api/v1/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"postgres-crud",
+						"api",
+						"v1",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-all-orders",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/postgres-crud/api/v1/orders?page=2&per_page=100",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"postgres-crud",
+						"api",
+						"v1",
+						"orders"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						},
+						{
+							"key": "per_page",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-by-id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/postgres-crud/api/v1/orders/64",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"postgres-crud",
+						"api",
+						"v1",
+						"orders",
+						"64"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update-order-status",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": \"COMPLETED\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/postgres-crud/api/v1/orders/50/status",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"postgres-crud",
+						"api",
+						"v1",
+						"orders",
+						"50",
+						"status"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,5 +1,5 @@
 server:
-  port: :9000
+  port: :8080
 allow_origins: "*"
 postgres:
   db_name: "postgres"
